@@ -17,6 +17,19 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const localData = localStorage.getItem('contact');
+    if (localData) {
+      this.setState({ contacts: JSON.parse(localData) });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
+    }
+  }
+
   formSubmitHandler = dataForm => {
     this.state.contacts.some(
       contact => contact.name.toLowerCase() === dataForm.name.toLowerCase()
